@@ -9,11 +9,11 @@ screen_height = 600
 
 class zombie_slayer(arcade.Window):
         space = False
-        d = False
-        a = False
         left_or_right = 0
-        move_right = True
+        move_right = False
         move_left = False
+        face_right = True
+        face_left = False
         killed_zombies = ['','','','','']
         zombie_attack_true_or_false = [False,False,False,False,False]
         zombie_move_true_or_false = [False,False,False,False,False]
@@ -218,15 +218,15 @@ class zombie_slayer(arcade.Window):
                         self.you_win_list.draw()
                         
                 if self.space == False and self.you_lose != True:
-                        if self.move_right == True:
+                        if self.face_right == True:
                                 self.player_R_list.draw()
-                        if self.move_left == True:
+                        if self.face_left == True:
                                 self.player_L_list.draw()
                 
                 elif self.space == True:
-                        if self.move_right == True:
+                        if self.face_right == True:
                                 self.player_A_R_list.draw()
-                        if self.move_left == True:
+                        if self.face_left == True:
                                 self.player_A_L_list.draw()
                         self.attack_count += 1
                         if self.attack_count == 13:
@@ -287,36 +287,22 @@ class zombie_slayer(arcade.Window):
                                 self.space = True
                                 self.attack_delay_true_or_false = True
                 if key == arcade.key.D:
-                        self.player_R_sprite.change_x = 3
-                        self.player_A_R_sprite.change_x = 3
-                        self.player_zombie_sprite.change_x = 3
-                        
-                        self.player_L_sprite.change_x = 3
-                        self.player_A_L_sprite.change_x = 3
-                        
                         self.move_right = True
                         self.move_left = False
-                elif key == arcade.key.A:
-                        #if self.player_L_sprite.center_x > 200:
-                                self.player_R_sprite.change_x = -3
-                                self.player_A_R_sprite.change_x = -3
-                                self.player_zombie_sprite.change_x = -3
-
-                                self.player_L_sprite.change_x = -3
-                                self.player_A_L_sprite.change_x = -3
-                                
+                        self.face_right = True
+                        self.face_left = False
+                elif key == arcade.key.A: 
                                 self.move_right = False
                                 self.move_left = True
+                                self.face_right = False
+                                self.face_left = True
 
 
         def on_key_release(self,key,modifiers):
-                if key == arcade.key.D or key == arcade.key.A:
-                                self.player_R_sprite.change_x = 0
-                                self.player_A_R_sprite.change_x = 0
-                                self.player_zombie_sprite.change_x = 0
-
-                                self.player_L_sprite.change_x = 0
-                                self.player_A_L_sprite.change_x = 0
+                if key == arcade.key.D:
+                        self.move_right = False
+                if key == arcade.key.A:
+                        self.move_left = False
 
 
         def move_zombie(self):                       
@@ -373,6 +359,29 @@ class zombie_slayer(arcade.Window):
                                 if self.inv_zombie_count%100 == 0:
                                         self.zombie_move_true_or_false1[self.inv_zombie_count1] = True
                                         self.inv_zombie_count1 += 1
+        def move_player(self):
+                if self.move_right == True:
+                        self.player_R_sprite.change_x = 3
+                        self.player_A_R_sprite.change_x = 3
+                        self.player_zombie_sprite.change_x = 3
+                        
+                        self.player_L_sprite.change_x = 3
+                        self.player_A_L_sprite.change_x = 3
+                elif self.move_left == True:
+                        self.player_R_sprite.change_x = -3
+                        self.player_A_R_sprite.change_x = -3
+                        self.player_zombie_sprite.change_x = -3
+
+                        self.player_L_sprite.change_x = -3
+                        self.player_A_L_sprite.change_x = -3
+                else:
+                        self.player_R_sprite.change_x = 0
+                        self.player_A_R_sprite.change_x = 0
+                        self.player_zombie_sprite.change_x = 0
+
+                        self.player_L_sprite.change_x = 0
+                        self.player_A_L_sprite.change_x = 0
+                        
 
 
         def body_disposal(self):
@@ -442,6 +451,7 @@ class zombie_slayer(arcade.Window):
                                 self.damage_points -= 1
                                 
                         zombie_slayer.move_zombie(self)
+                        zombie_slayer.move_player(self)
                         zombie_slayer.update_my_physics_engine(self)
                         
 
