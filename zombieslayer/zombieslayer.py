@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-#comment
+
 import arcade
 from random import randint
 
 screen_width = 800
 screen_height = 600
-
 
 class zombie_slayer(arcade.Window):
         space = False
@@ -25,18 +24,18 @@ class zombie_slayer(arcade.Window):
         zombie_disposal_count = [zombie_disposal_count1,zombie_disposal_count2,zombie_disposal_count3,zombie_disposal_count4,zombie_disposal_count5]
         dispose_of_zombie = [False,False,False,False,False]
         my_zombie_list = []
-        killed_zombies1 = ['','','','','']
-        zombie_attack_true_or_false1 = [False,False,False,False,False]
-        zombie_move_true_or_false1 = [False,False,False,False,False]
-        zombie_disposal1_count1 = 0
-        zombie_disposal1_count2 = 0
-        zombie_disposal1_count3 = 0
-        zombie_disposal1_count4 = 0
-        zombie_disposal1_count5 = 0
-        zombie_disposal1_count = [zombie_disposal1_count1,zombie_disposal1_count2,zombie_disposal1_count3,zombie_disposal1_count4,zombie_disposal1_count5]
-        dispose_of_zombie1 = [False,False,False,False,False]
+        left_killed_zombies = ['','','','','']
+        left_zombie_attack_true_or_false = [False,False,False,False,False]
+        left_zombie_move_true_or_false = [False,False,False,False,False]
+        left_zombie_disposal_count1 = 0
+        left_zombie_disposal_count2 = 0
+        left_zombie_disposal_count3 = 0
+        left_zombie_disposal_count4 = 0
+        left_zombie_disposal_count5 = 0
+        left_zombie_disposal_count = [left_zombie_disposal_count1,left_zombie_disposal_count2,left_zombie_disposal_count3,left_zombie_disposal_count4,left_zombie_disposal_count5]
+        left_dispose_of_zombie = [False,False,False,False,False]
         killed_zombies_combined = []
-        my_zombie_list1 = []
+        left_my_zombie_list = []
         damage_points = 0
         attack_count = 0
         score = 0
@@ -45,8 +44,8 @@ class zombie_slayer(arcade.Window):
         count_3 = 0
         zombie_count = 0
         zombie_count1 = 0
-        inv_zombie_count = 0
-        inv_zombie_count1 = 0
+        left_zombie_count = 0
+        left_zombie_count1 = 0
         game_over = False
         you_lose = False
         you_win = False
@@ -68,8 +67,8 @@ class zombie_slayer(arcade.Window):
                 self.zombie_list = arcade.SpriteList()
                 self.zombie1_list = arcade.SpriteList()
                 self.player_zombie_list = arcade.SpriteList()
-                self.inv_zombie1_list = arcade.SpriteList()
-                self.inv_zombie_list = arcade.SpriteList()
+                self.left_zombie1_list = arcade.SpriteList()
+                self.left_zombie_list = arcade.SpriteList()
                 self.player_health_list = arcade.SpriteList()
                 self.health_bar_list = arcade.SpriteList()
                 self.game_over_list = arcade.SpriteList()
@@ -145,25 +144,25 @@ class zombie_slayer(arcade.Window):
                         self.my_zombie_list.append(self.zombie_sprite)
                 
                 for i in range(5):
-                        self.zombie_sprite1 = arcade.Sprite("/home/elliot/Documents/python/arcade/zombie1.png",0.44)
+                        self.zombie_sprite1 = arcade.Sprite("zombie1.png",0.44)
                         self.zombie_sprite1.center_x = 800
                         self.zombie_sprite1.center_y = 158
                         self.zombie1_list.append(self.zombie_sprite1)
 
                 for i in range(5):
-                        self.inv_zombie_sprite = arcade.Sprite("/home/elliot/Documents/python/arcade/inv_zombie.png",0.44)
-                        self.inv_zombie_sprite.center_x = -100
-                        self.inv_zombie_sprite.center_y = 160
-                        self.inv_zombie_list.append(self.inv_zombie_sprite)
-                        self.my_zombie_list1.append(self.inv_zombie_sprite)
+                        self.left_zombie_sprite = arcade.Sprite("left_zombie.png",0.44)
+                        self.left_zombie_sprite.center_x = -100
+                        self.left_zombie_sprite.center_y = 160
+                        self.left_zombie_list.append(self.left_zombie_sprite)
+                        self.left_my_zombie_list.append(self.left_zombie_sprite)
 
                 for i in range(5):
-                        self.inv_zombie1_sprite = arcade.Sprite("/home/elliot/Documents/python/arcade/inv_zombie1.png",0.44)
-                        self.inv_zombie1_sprite.center_x = -90
-                        self.inv_zombie1_sprite.center_y = 160
-                        self.inv_zombie1_list.append(self.inv_zombie1_sprite)
+                        self.left_zombie1_sprite = arcade.Sprite("left_zombie1.png",0.44)
+                        self.left_zombie1_sprite.center_x = -90
+                        self.left_zombie1_sprite.center_y = 160
+                        self.left_zombie1_list.append(self.left_zombie1_sprite)
 
-                self.player_zombie_sprite = arcade.Sprite("/home/elliot/Documents/python/arcade/inv_zombie.png",0.44)
+                self.player_zombie_sprite = arcade.Sprite("left_zombie.png",0.44)
                 self.player_zombie_sprite.center_x = 385
                 self.player_zombie_sprite.center_y = 160
                 self.player_zombie_list.append(self.player_zombie_sprite)
@@ -189,22 +188,21 @@ class zombie_slayer(arcade.Window):
                 self.physics_engine8 = arcade.PhysicsEngineSimple(self.zombie1_list[2],self.ground_list1)
                 self.physics_engine9 = arcade.PhysicsEngineSimple(self.zombie1_list[3],self.ground_list1)
                 self.physics_engine10 = arcade.PhysicsEngineSimple(self.zombie1_list[4],self.ground_list1)
-                self.physics_engine11 = arcade.PhysicsEngineSimple(self.inv_zombie_list[0],self.ground_list1)
-                self.physics_engine12 = arcade.PhysicsEngineSimple(self.inv_zombie_list[1],self.ground_list1)
-                self.physics_engine13 = arcade.PhysicsEngineSimple(self.inv_zombie_list[2],self.ground_list1)
-                self.physics_engine14 = arcade.PhysicsEngineSimple(self.inv_zombie_list[3],self.ground_list1)
-                self.physics_engine15 = arcade.PhysicsEngineSimple(self.inv_zombie_list[4],self.ground_list1)
-                self.physics_engine16 = arcade.PhysicsEngineSimple(self.inv_zombie1_list[0],self.ground_list1)
-                self.physics_engine17 = arcade.PhysicsEngineSimple(self.inv_zombie1_list[1],self.ground_list1)
-                self.physics_engine18 = arcade.PhysicsEngineSimple(self.inv_zombie1_list[2],self.ground_list1)
-                self.physics_engine19 = arcade.PhysicsEngineSimple(self.inv_zombie1_list[3],self.ground_list1)
-                self.physics_engine20 = arcade.PhysicsEngineSimple(self.inv_zombie1_list[4],self.ground_list1)
+                self.physics_engine11 = arcade.PhysicsEngineSimple(self.left_zombie_list[0],self.ground_list1)
+                self.physics_engine12 = arcade.PhysicsEngineSimple(self.left_zombie_list[1],self.ground_list1)
+                self.physics_engine13 = arcade.PhysicsEngineSimple(self.left_zombie_list[2],self.ground_list1)
+                self.physics_engine14 = arcade.PhysicsEngineSimple(self.left_zombie_list[3],self.ground_list1)
+                self.physics_engine15 = arcade.PhysicsEngineSimple(self.left_zombie_list[4],self.ground_list1)
+                self.physics_engine16 = arcade.PhysicsEngineSimple(self.left_zombie1_list[0],self.ground_list1)
+                self.physics_engine17 = arcade.PhysicsEngineSimple(self.left_zombie1_list[1],self.ground_list1)
+                self.physics_engine18 = arcade.PhysicsEngineSimple(self.left_zombie1_list[2],self.ground_list1)
+                self.physics_engine19 = arcade.PhysicsEngineSimple(self.left_zombie1_list[3],self.ground_list1)
+                self.physics_engine20 = arcade.PhysicsEngineSimple(self.left_zombie1_list[4],self.ground_list1)
                 self.physics_engine21 = arcade.PhysicsEngineSimple(self.player_R_sprite,self.ground_list)
                 self.physics_engine22 = arcade.PhysicsEngineSimple(self.player_A_R_sprite,self.ground_list)
                 self.physics_engine23 = arcade.PhysicsEngineSimple(self.player_L_sprite,self.ground_list)
                 self.physics_engine24 = arcade.PhysicsEngineSimple(self.player_A_L_sprite,self.ground_list)
                 self.physics_engine25 = arcade.PhysicsEngineSimple(self.player_zombie_sprite,self.ground_list)
-
 
 
         def on_draw(self):
@@ -238,10 +236,10 @@ class zombie_slayer(arcade.Window):
                                 self.zombie1_list[self.my_zombie_list.index(self.killed_zombies[i])].draw()
                 self.zombie_list.draw()
                 
-                for i in range(len(self.killed_zombies1)):
-                        if self.killed_zombies1[i] != '':
-                                self.inv_zombie1_list[self.my_zombie_list1.index(self.killed_zombies1[i])].draw()
-                self.inv_zombie_list.draw()
+                for i in range(len(self.left_killed_zombies)):
+                        if self.left_killed_zombies[i] != '':
+                                self.left_zombie1_list[self.left_my_zombie_list.index(self.left_killed_zombies[i])].draw()
+                self.left_zombie_list.draw()
 
 
                 self.ground_list.draw()
@@ -278,7 +276,6 @@ class zombie_slayer(arcade.Window):
                                 self.health_bar_list[i].draw()
                 elif self.damage_points == 900:
                         self.game_over = True
-
                                 
 
         def on_key_press(self,key,modifiers):
@@ -304,7 +301,6 @@ class zombie_slayer(arcade.Window):
                 if key == arcade.key.A:
                         self.move_left = False
 
-
         def move_zombie(self):                       
                 for i in range(len(self.zombie_move_true_or_false)):
                         #if i < len(self.zombie_list):
@@ -326,25 +322,25 @@ class zombie_slayer(arcade.Window):
                                                 self.zombie1_list[i].change_x = (800 - self.zombie1_list[i].center_x)
                                                 self.dispose_of_zombie[i] = False
                                                 
-                for i in range(len(self.zombie_move_true_or_false1)):
-                        #if i < len(self.inv_zombie_list):
+                for i in range(len(self.left_zombie_move_true_or_false)):
+                        #if i < len(self.left_zombie_list):
                                 #if i < len(self.zombie1_list):
-                                        if self.zombie_attack_true_or_false1[i] == False and self.zombie_move_true_or_false1[i] == True:
+                                        if self.left_zombie_attack_true_or_false[i] == False and self.left_zombie_move_true_or_false[i] == True:
                                                 if i == 1 or i == 4:
-                                                        self.inv_zombie_list[i].change_x = 4
-                                                        self.inv_zombie1_list[i].change_x = 4
+                                                        self.left_zombie_list[i].change_x = 4
+                                                        self.left_zombie1_list[i].change_x = 4
                                                 else:
-                                                        self.inv_zombie_list[i].change_x = 2
-                                                        self.inv_zombie1_list[i].change_x = 2
+                                                        self.left_zombie_list[i].change_x = 2
+                                                        self.left_zombie1_list[i].change_x = 2
                                         else:
-                                                self.inv_zombie_list[i].change_x = 0
-                                                self.inv_zombie1_list[i].change_x = 0
+                                                self.left_zombie_list[i].change_x = 0
+                                                self.left_zombie1_list[i].change_x = 0
 
-                                        if self.killed_zombies1[i] != '':
-                                                self.inv_zombie_list[i].center_x = -100
-                                        if self.dispose_of_zombie1[i] == True:
-                                                self.inv_zombie1_list[i].change_x = (-100 - self.inv_zombie1_list[i].center_x)
-                                                self.dispose_of_zombie1[i] = False
+                                        if self.left_killed_zombies[i] != '':
+                                                self.left_zombie_list[i].center_x = -100
+                                        if self.left_dispose_of_zombie[i] == True:
+                                                self.left_zombie1_list[i].change_x = (-100 - self.left_zombie1_list[i].center_x)
+                                                self.left_dispose_of_zombie[i] = False
                 
                 self.left_or_right = randint(0,1)
                 if self.left_or_right == 0:
@@ -354,11 +350,11 @@ class zombie_slayer(arcade.Window):
                                         self.zombie_move_true_or_false[self.zombie_count1] = True
                                         self.zombie_count1 += 1
                 else:
-                        if self.inv_zombie_count1 != 5:
-                                self.inv_zombie_count += 1
-                                if self.inv_zombie_count%100 == 0:
-                                        self.zombie_move_true_or_false1[self.inv_zombie_count1] = True
-                                        self.inv_zombie_count1 += 1
+                        if self.left_zombie_count1 != 5:
+                                self.left_zombie_count += 1
+                                if self.left_zombie_count%100 == 0:
+                                        self.left_zombie_move_true_or_false[self.left_zombie_count1] = True
+                                        self.left_zombie_count1 += 1
         def move_player(self):
                 if self.move_right == True:
                         self.player_R_sprite.change_x = 3
@@ -383,7 +379,6 @@ class zombie_slayer(arcade.Window):
                         self.player_A_L_sprite.change_x = 0
                         
 
-
         def body_disposal(self):
                 for i in range(len(self.killed_zombies)):
                         if self.killed_zombies[i] != '':
@@ -394,14 +389,14 @@ class zombie_slayer(arcade.Window):
                                         self.killed_zombies[i] = ''
                                         self.zombie_disposal_count[i] = 0
                                         
-                for i in range(len(self.killed_zombies1)):
-                        if self.killed_zombies1[i] != '':
-                                self.zombie_disposal1_count[i] += 1
-                                if self.zombie_disposal1_count[i] == 120:
-                                        self.dispose_of_zombie1[self.my_zombie_list1.index(self.killed_zombies1[i])] = True
-                                        self.zombie_move_true_or_false1[self.my_zombie_list1.index(self.killed_zombies1[i])] = True
-                                        self.killed_zombies1[i] = ''
-                                        self.zombie_disposal1_count[i] = 0
+                for i in range(len(self.left_killed_zombies)):
+                        if self.left_killed_zombies[i] != '':
+                                self.left_zombie_disposal_count[i] += 1
+                                if self.left_zombie_disposal_count[i] == 120:
+                                        self.left_dispose_of_zombie[self.left_my_zombie_list.index(self.left_killed_zombies[i])] = True
+                                        self.left_zombie_move_true_or_false[self.left_my_zombie_list.index(self.left_killed_zombies[i])] = True
+                                        self.left_killed_zombies[i] = ''
+                                        self.left_zombie_disposal_count[i] = 0
 
 
         def update_my_physics_engine(self):
@@ -493,36 +488,36 @@ class zombie_slayer(arcade.Window):
 
                         if self.space == True:
                                 if self.move_right == False:
-                                        self.kill_zombie = arcade.check_for_collision_with_list(self.player_A_L_sprite,self.inv_zombie_list)
+                                        self.kill_zombie = arcade.check_for_collision_with_list(self.player_A_L_sprite,self.left_zombie_list)
                                         for i in self.kill_zombie:
-                                                self.killed_zombies1[self.my_zombie_list1.index(i)] = i
-                                                self.zombie_move_true_or_false1[self.my_zombie_list1.index(i)] = False
+                                                self.left_killed_zombies[self.left_my_zombie_list.index(i)] = i
+                                                self.left_zombie_move_true_or_false[self.left_my_zombie_list.index(i)] = False
 
                         elif self.space == False:
-                                zombie_attack_list1 = arcade.check_for_collision_with_list(self.player_L_sprite,self.inv_zombie_list)
+                                zombie_attack_list1 = arcade.check_for_collision_with_list(self.player_L_sprite,self.left_zombie_list)
                                 
                                 for i in zombie_attack_list1:   
-                                        self.zombie_attack_true_or_false1[self.my_zombie_list1.index(i)] = True
+                                        self.left_zombie_attack_true_or_false[self.left_my_zombie_list.index(i)] = True
                                         
                                 if len(zombie_attack_list1) == 0:
-                                        for i in range(len(self.zombie_attack_true_or_false1)):
-                                                self.zombie_attack_true_or_false1[i] = False
+                                        for i in range(len(self.left_zombie_attack_true_or_false)):
+                                                self.left_zombie_attack_true_or_false[i] = False
                                 else:
-                                        for i in range(len(self.zombie_attack_true_or_false1)):
-                                                if self.zombie_attack_true_or_false1[i] == True:
-                                                        if self.my_zombie_list1[i] in zombie_attack_list:
-                                                                self.zombie_attack_true_or_false1[i] == True
+                                        for i in range(len(self.left_zombie_attack_true_or_false)):
+                                                if self.left_zombie_attack_true_or_false[i] == True:
+                                                        if self.left_my_zombie_list[i] in zombie_attack_list:
+                                                                self.left_zombie_attack_true_or_false[i] == True
                                                         else:
-                                                                self.zombie_attack_true_or_false1[i] == False
+                                                                self.left_zombie_attack_true_or_false[i] == False
                                                 
-                                for i in range(len(self.zombie_attack_true_or_false1)):
-                                        if self.zombie_attack_true_or_false1[i] == True and self.killed_zombies1[i] == '':
+                                for i in range(len(self.left_zombie_attack_true_or_false)):
+                                        if self.left_zombie_attack_true_or_false[i] == True and self.left_killed_zombies[i] == '':
                                                 self.damage_points += 4
 
                 if self.damage_points >= 900:
                         self.game_over = False
                         self.you_lose = True
-                self.killed_zombies_combined = [] + self.killed_zombies + self.killed_zombies1
+                self.killed_zombies_combined = [] + self.killed_zombies + self.left_killed_zombies
                 for i in self.killed_zombies_combined:
                         if i == True:
                                 self.score += 1
