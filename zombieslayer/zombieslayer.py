@@ -451,7 +451,7 @@ class zombie_slayer(arcade.Window):
                         
 
                         if self.space == True:
-                                if self.move_right == True:
+                                if self.face_right == True:
                                         self.kill_zombie = arcade.check_for_collision_with_list(self.player_A_R_sprite,self.zombie_list)
                                         for i in self.kill_zombie:
                                                 self.killed_zombies[self.my_zombie_list.index(i)] = i
@@ -487,7 +487,7 @@ class zombie_slayer(arcade.Window):
                                 self.damage_points -= 1
 
                         if self.space == True:
-                                if self.move_right == False:
+                                if self.face_right == False:
                                         self.kill_zombie = arcade.check_for_collision_with_list(self.player_A_L_sprite,self.left_zombie_list)
                                         for i in self.kill_zombie:
                                                 self.left_killed_zombies[self.left_my_zombie_list.index(i)] = i
