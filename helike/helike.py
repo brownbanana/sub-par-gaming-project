@@ -14,7 +14,7 @@ class MyGame(arcade.Window):
     helike_scale_up = False
     helike_scale_down = False
     helike_center_x = 400
-    helike_center_y = 500
+    helike_center_y = -1700
     helike_rad = 2000
     north_x = 0
     north_y = 0
@@ -52,11 +52,10 @@ class MyGame(arcade.Window):
     head_rad = 20
     north_pole_scale = 200
 
-    gravity_constant = 6700000
+    gravity_constant = 670000000
     projectile_x = 400
-    projectile_y = 600
-    projectile_velocity_x = 0
-    projectile_velocity_y = 0
+    projectile_y = 310
+    projectile_y1 = projectile_y
     projectile_rad = 10
     projectile_force_x = 0
     projectile_force_y = 0
@@ -64,7 +63,17 @@ class MyGame(arcade.Window):
     projectile_distance_from_center1 = 2100
     projectile_distance_scale = 1
     projectile_scale_factor = 100
-    find_distance = True
+    projectile_dis_x = 0
+    projectile_dis_x1 = 0
+    projectile_dis_y = 0
+    projectile_dis_y1 = 0
+    #projectile_dis_y_total = 0
+    projectile_velocity_x = 100
+    projectile_velocity_y = 100
+    projectile_acc_x = 0
+    projectile_acc_y = 0
+
+    force_on_projectile_x = 0
 
     def __init__(self, width, height):
         super().__init__(width, height)
@@ -79,23 +88,17 @@ class MyGame(arcade.Window):
         arcade.start_render()
 
         arcade.draw_circle_filled(self.helike_center_x, self.helike_center_y, self.helike_rad, arcade.color.GREEN)
-        arcade.draw_line(self.north_x,self.north_y,self.north_x,self.north_y+self.north_pole_scale, arcade.color.RED, 5)
+        #arcade.draw_line(self.north_x,self.north_y,self.north_x,self.north_y+100, arcade.color.RED, 5)
         #arcade.draw_line(self.east_x, self.east_y,self.east_x+50,self.east_y,arcade.color.RED,5)
         #arcade.draw_line(self.south_x, self.south_y,self.south_x,self.south_y-50,arcade.color.RED,5)
         #arcade.draw_line(self.west_x,self.west_y,self.west_x-50,self.west_y,arcade.color.RED,5)
         arcade.draw_line(self.line_x,self.line_y,self.line_x2,self.line_y2, arcade.color.RED,5)
-        arcade.draw_line(self.leg1_start[0],self.leg1_start[1],self.leg1_end[0],self.leg1_end[1],arcade.color.WHITE,self.body_width)
-        arcade.draw_line(self.leg2_start[0],self.leg2_start[1],self.leg2_end[0],self.leg2_end[1],arcade.color.WHITE,self.body_width)
-        arcade.draw_line(self.body_start[0],self.body_start[1],self.body_end[0],self.body_end[1],arcade.color.WHITE,self.body_width)
-        arcade.draw_line(self.arm_start[0],self.arm_start[1],self.arm_end[0],self.arm_end[1],arcade.color.WHITE,self.body_width)
-        arcade.draw_circle_outline(self.head_center_x,self.head_center_y,self.head_rad,arcade.color.WHITE,self.body_width,100)
+        #arcade.draw_line(self.leg1_start[0],self.leg1_start[1],self.leg1_end[0],self.leg1_end[1],arcade.color.WHITE,self.body_width)
+        #arcade.draw_line(self.leg2_start[0],self.leg2_start[1],self.leg2_end[0],self.leg2_end[1],arcade.color.WHITE,self.body_width)
+        #arcade.draw_line(self.body_start[0],self.body_start[1],self.body_end[0],self.body_end[1],arcade.color.WHITE,self.body_width)
+        #arcade.draw_line(self.arm_start[0],self.arm_start[1],self.arm_end[0],self.arm_end[1],arcade.color.WHITE,self.body_width)
+        #arcade.draw_circle_outline(self.head_center_x,self.head_center_y,self.head_rad,arcade.color.WHITE,self.body_width,100)
         arcade.draw_circle_filled(self.projectile_x,self.projectile_y,self.projectile_rad,arcade.color.BLUE)
-        
-        """
-        self.stick.draw()
-        self.bow.draw()
-        self.arrow.draw()
-        """
         
         arcade.finish_render
         
@@ -120,23 +123,23 @@ class MyGame(arcade.Window):
         if key == arcade.key.RIGHT:
             self.angle_down = False
 
-    def find_distance1(self):
-        #self.projectile_distance_from_center = (((self.projectile_x-self.helike_center_x)**2+(self.projectile_y-self.helike_center_y)**2)**(1/2))
-        self.find_distance = False
 
     def update(self, delta_time):
-        self.cycle += 1
-        if self.cycle == 60:
-            self.time += 1
+        
+        self.time = 0.013
         
         if self.helike_scale_up == True or self.helike_scale_down == True:
             if self.helike_scale_up == True and self.helike_rad > 100:
                 self.projectile_distance_from_center1 += 1
             if self.helike_scale_down == True and self.helike_rad < 3000:
                 self.projectile_distance_from_center1 -= 1
-            self.uni_scale_factor = self.projectile_distance_from_center/self.projectile_distance_from_center1
 
-            #self.projectile_scale_factor = self.projectile_scale_factor * self.uni_scale_factor
+        #self.projectile_distance_scale = self.projectile_distance_from_center1
+
+        """
+        if self.helike_rad > 100 and self.helike_rad < 3000:
+
+            self.uni_scale_factor = self.projectile_distance_from_center/self.projectile_distance_from_center1
             self.north_pole_scale = self.north_pole_scale * self.uni_scale_factor
             self.projectile_distance_scale = self.projectile_distance_scale / self.uni_scale_factor
             self.projectile_rad = self.projectile_rad * self.uni_scale_factor
@@ -151,6 +154,8 @@ class MyGame(arcade.Window):
             self.arm_len = self.arm_len * self.uni_scale_factor
             self.head_rad = self.head_rad * self.uni_scale_factor
 
+        """
+
 
 
         if self.angle_up == True:
@@ -162,8 +167,8 @@ class MyGame(arcade.Window):
             if self.line_angle == 0:
                 self.line_angle = 360
 
-        self.helike_center_x = self.helike_center_x - (self.line_x2 - 400)
-        self.helike_center_y = self.helike_center_y - (self.line_y2 - 300)
+        #self.helike_center_x = self.helike_center_x - (self.line_x2 - 400)
+        #self.helike_center_y = self.helike_center_y - (self.line_y2 - 300)
 
         self.north_pole_x = self.helike_center_x
         self.norht_pole_y = self.helike_center_y + self.helike_rad
@@ -193,28 +198,74 @@ class MyGame(arcade.Window):
         self.line_x = self.helike_center_x
         self.line_y = self.helike_center_y
 
-        self.line_x2 = self.helike_center_x + (math.cos(math.radians(self.line_angle)) * self.helike_rad)
-        self.line_y2 = self.helike_center_y + (math.sin(math.radians(self.line_angle)) * self.helike_rad)
+        #self.line_x2 = self.helike_center_x + (math.cos(math.radians(self.line_angle)) * self.helike_rad)
+        #self.line_y2 = self.helike_center_y + (math.sin(math.radians(self.line_angle)) * self.helike_rad)
+        self.line_x2 = self.projectile_x #+ (self.helike_center_x + (math.cos(math.radians(self.line_angle)) * self.helike_rad))
+        self.line_y2 = self.projectile_y #+ (self.helike_center_y + (math.sin(math.radians(self.line_angle)) * self.helike_rad))
 
-        if self.line_angle < 90 and self.line_angle >= 0 or self.line_angle == 360:
-            self.projectile_x = self.line_x2 + self.projectile_scale_factor*math.cos(math.radians(self.line_angle))
-            self.projectile_y = self.line_y2 + self.projectile_scale_factor*math.sin(math.radians(self.line_angle))
+        self.line_angle = math.degrees(math.asin((self.line_y2-self.helike_center_y)/(((self.line_x2-self.helike_center_x)**2)+((self.line_y2-self.helike_center_y)**2))**(1/2)))
+
+        """
+        if self.line_angle < 90 and (self.line_angle >= 0 or self.line_angle == 360):
+            self.projectile_x = self.line_y2 + self.projectile_scale_*math.cos(math.radians(self.line_angle))
+           # self.projectile_y = self.line_y2 + self.projectile_scale_factor*math.sin(math.radians(self.line_angle)) + 100
         if self.line_angle < 180 and self.line_angle >= 90:
-            self.projectile_x = self.line_x2 - self.projectile_scale_factor*math.cos(math.radians(self.line_angle))
-            self.projectile_y = self.line_y2 + self.projectile_scale_factor*math.sin(math.radians(self.line_angle))
+            self.projectile_x = self.line_x2 + self.projectile_scale_*math.cos(math.radians(self.line_angle))
+           # self.projectile_y = self.line_x2 + self.projectile_scale_factor*math.sin(math.radians(self.line_angle))
         if self.line_angle < 270 and self.line_angle >= 180:
-            self.projectile_x = self.line_x2 - self.projectile_scale_factor*math.cos(math.radians(self.line_angle))
-            self.projectile_y = self.line_y2 + self.projectile_scale_factor*math.sin(math.radians(self.line_angle))
-        if self.line_angle < 360  or self.line_angle == 0 and self.line_angle >= 270:
-            self.projectile_x = self.line_x2 + self.projectile_scale_factor*math.cos(math.radians(self.line_angle))
-            self.projectile_y = self.line_y2 + self.projectile_scale_factor*math.sin(math.radians(self.line_angle))
+            self.projectile_x = self.line_x2 - self.projectile_distance_scale_*math.cos(math.radians(self.line_angle))
+           # self.projectile_y = self.line_y2 + self.projectile_distance_scale*math.sin(math.radians(self.line_angle))
+        if (self.line_angle < 360  or self.line_angle == 0) and self.line_angle >= 270:
+            self.projectile_x = self.line_x2 + self.projectile_scale_*math.cos(math.radians(self.line_angle))
+            #self.projectile_y = self.line_y2 + self.projectile_scale_factor*math.sin(math.radians(self.line_angle))
+        """
+        
+        #print(self.projectile_dis_y,self.projectile_distance_scale*(((self.projectile_x-self.helike_center_x)**2+(self.projectile_y-self.helike_center_y)**2)**(1/2)))
+        #self.projectile_y1 = self.projectile_y + self.projectile_velocity_y*self.time#(self.projectile_distance_scale*((self.projectile_x-self.helike_center_x)**2+(self.projectile_y-self.helike_center_y)**2)**(1/2))*math.sin(math.radians(self.line_angle))-2100
+        #self.projectile_dis_y = self.projectile_y1 - self.projectile_y
+        #self.projectile_dis_y = self.projectile_y1
 
-        if self.find_distance == True:
-            MyGame.find_distance1(self)
-        #print(self.uni_scale_factor)
-        #self.projectile_distance_from_center = (((self.projectile_distance_scale*(self.projectile_x-self.helike_center_x))**2+(self.projectile_distance_scale*(self.projectile_y-self.helike_center_y))**2)**(1/2))
-        #self.projectile_distance_from_center1 = self.projectile_distance_scale*(((self.projectile_x-self.helike_center_x)**2+(self.projectile_y-self.helike_center_y)**2)**(1/2))
-        print(self.projectile_distance_scale*(((self.projectile_x-self.helike_center_x)**2+(self.projectile_y-self.helike_center_y)**2)**(1/2)))
+        
+        self.projectile_distance_from_center = ((self.projectile_x-self.helike_center_x)**2+(self.projectile_y-self.helike_center_y)**2)**(1/2)
+
+        self.projectile_velocity_y = self.projectile_velocity_y + 1 * math.sin(math.radians(self.line_angle))
+        self.projectile_velocity_x = self.projectile_velocity_x + 1 * math.cos(math.radians(self.line_angle))
+        
+        self.force_on_projectile_y = self.gravity_constant/(((self.projectile_distance_from_center)) + 1*math.sin(math.radians(self.line_angle)))**2
+        self.force_on_projectile_x = self.gravity_constant/(((self.projectile_distance_from_center)) + 1*math.cos(math.radians(self.line_angle)))**2
+
+        if self.line_angle < 90 and (self.line_angle >= 0 or self.line_angle == 360):
+            self.projectile_acc_y = -self.force_on_projectile_y
+        if self.line_angle < 180 and self.line_angle >= 90:
+            self.projectile_acc_y = -self.force_on_projectile_y
+        if self.line_angle < 270 and self.line_angle >= 180:
+            self.projectile_acc_y = self.force_on_projectile_y
+        if (self.line_angle < 360  or self.line_angle == 0) and self.line_angle >= 270:
+            self.projectile_acc_y = self.force_on_projectile_y
+
+        if self.line_angle < 90 and (self.line_angle >= 0 or self.line_angle == 360):
+            self.projectile_acc_x = -self.force_on_projectile_x
+        if self.line_angle < 180 and self.line_angle >= 90:
+            self.projectile_acc_x = self.force_on_projectile_x
+        if self.line_angle < 270 and self.line_angle >= 180:
+            self.projectile_acc_x = self.force_on_projectile_x
+        if (self.line_angle < 360  or self.line_angle == 0) and self.line_angle >= 270:
+            self.projectile_acc_x = -self.force_on_projectile_x
+        print(self.projectile_x)
+        self.projectile_y = self.projectile_y + self.projectile_velocity_y*self.time + (1/2*self.projectile_acc_y)*(self.time**2) #+ (self.helike_center_y + self.helike_rad + self.projectile_rad)*math.sin(math.radians(self.line_angle))
+        self.projectile_x = self.projectile_x + self.projectile_velocity_x*self.time + (1/2*self.projectile_acc_x)*(self.time**2) #+ (self.helike_center_x + self.helike_rad + self.projectile_rad)#*math.cos(math.radians(self.line_angle))
+        
+        self.projectile_velocity_y = self.projectile_velocity_y + self.projectile_acc_y * self.time
+        self.projectile_velocity_x = self.projectile_velocity_x + self.projectile_acc_x * self.time
+        
+        
+        self.projectile_distance_from_center = ((self.projectile_x-self.helike_center_x)**2+(self.projectile_y-self.helike_center_y)**2)**(1/2)
+        if self.projectile_distance_from_center <= self.helike_rad + self.projectile_rad and self.projectile_velocity_y < 0:
+            self.projectile_velocity_y = self.projectile_velocity_y * -1
+            self.projectile_velocity_x = self.projectile_velocity_x * -1
+        
+        
+        #print(self.projectile_x,self.projectile_y)
 
         self.north_x = self.helike_center_x
         self.north_y = self.helike_center_y + self.helike_rad
