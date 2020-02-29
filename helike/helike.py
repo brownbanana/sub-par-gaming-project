@@ -66,8 +66,8 @@ class MyGame(arcade.Window):
     projectile_velocity = 0
     projectile_angle = 0
     projectile_velocity1 = 0
-    projectile_velocity_x = 300
-    projectile_velocity_y = 0
+    projectile_velocity_x = -300
+    projectile_velocity_y = -100
     projectile_velocity_x2 = 0
     projectile_velocity_y2 = 0
     projectile_acc_x = 0
@@ -103,7 +103,7 @@ class MyGame(arcade.Window):
         #arcade.draw_line(self.arm_start[0],self.arm_start[1],self.arm_end[0],self.arm_end[1],arcade.color.WHITE,self.body_width)
         #arcade.draw_circle_outline(self.head_center_x,self.head_center_y,self.head_rad,arcade.color.WHITE,self.body_width,100)
         arcade.draw_circle_filled(self.projectile_x,self.projectile_y,self.projectile_rad,arcade.color.RED)
-        arcade.draw_line(self.tangent_x,self.tangent_y,self.tangent_x2,self.tangent_y2,arcade.color.RED,2)
+        #arcade.draw_line(self.tangent_x,self.tangent_y,self.tangent_x2,self.tangent_y2,arcade.color.RED,2)
         
         arcade.finish_render
         
@@ -208,25 +208,37 @@ class MyGame(arcade.Window):
         self.angle_from_sin = math.degrees(math.asin((self.projectile_y-self.helike_center_y)/(((self.projectile_x-self.helike_center_x)**2)+((self.projectile_y-self.helike_center_y)**2))**(1/2)))
         self.angle_from_cos = math.degrees(math.acos((self.projectile_x-self.helike_center_x)/(((self.projectile_x-self.helike_center_x)**2)+((self.projectile_y-self.helike_center_y)**2))**(1/2)))
 
-        if round(180-self.angle_from_sin,0) == round(self.angle_from_cos,0) or round(180-self.angle_from_sin,0) == 180-round(self.angle_from_cos,0)+180: #and (180-self.angle_from_sin < 130 and 180-self.angle_from_sin > 130):
+        """
+        if (round(180-self.angle_from_sin,0) == round(self.angle_from_cos,0) and self.angle_from_cos > 135) or (round(180-self.angle_from_sin,0) == 180-round(self.angle_from_cos,0)+180 and self.angle_from_cos < - 135): #and (180-self.angle_from_sin < 130 and 180-self.angle_from_sin > 130):
             self.use_sin = True
-        elif self.use_sin == True and 180-self.angle_from_sin < 130:
+        elif self.use_sin == True and self.angle_from_sin > 0:#180-self.angle_from_sin < 115:
             self.line_angle = self.angle_from_cos
             self.use_sin = False
-        elif self.use_sin == True and 180-self.angle_from_sin > 240:
+        elif self.use_sin == True and self.angle_from_sin < 0:#180-self.angle_from_sin > 260:
             self.line_angle = -self.angle_from_cos
             self.use_sin = False
         
         if self.use_sin == False:
-            if self.line_angle < 180 and self.line_angle >= 0:
-                self.line_angle = math.degrees(math.acos((self.projectile_x-self.helike_center_x)/(((self.projectile_x-self.helike_center_x)**2)+((self.projectile_y-self.helike_center_y)**2))**(1/2)))
-            if self.line_angle < 5 and self.line_angle >= -90:
+            if self.line_angle < 180 and self.line_angle >= -15:
+                self.line_angle = self.angle_from_cos # math.degrees(math.acos((self.projectile_x-self.helike_center_x)/(((self.projectile_x-self.helike_center_x)**2)+((self.projectile_y-self.helike_center_y)**2))**(1/2)))
+            if self.line_angle < 45 and self.line_angle >= -90:
                 self.line_angle = math.degrees(math.asin((self.projectile_y-self.helike_center_y)/(((self.projectile_x-self.helike_center_x)**2)+((self.projectile_y-self.helike_center_y)**2))**(1/2)))
-            if self.line_angle < -85 and self.line_angle >= -135:
+            if self.line_angle < -45 and self.line_angle >= -180:
                 self.line_angle = -math.degrees(math.acos((self.projectile_x-self.helike_center_x)/(((self.projectile_x-self.helike_center_x)**2)+((self.projectile_y-self.helike_center_y)**2))**(1/2)))
-
+            #if self.angle_from_cos > 135 and self.angle_from_sin < -135:
+                #self.line_angle = -self.angle_from_sin
         else:
             self.line_angle = 180 -self.angle_from_sin
+        """
+
+        if self.angle_from_cos > 0 and self.angle_from_cos < 180:
+            self.line_angle = self.angle_from_cos
+        if 180-self.angle_from_sin < 180 and 180-self.angle_from_cos+180 > 180 and self.angle_from_cos > 135 and 180-self.angle_from_sin < 180 < 210:
+            self.line_angle = 180-self.angle_from_sin
+        if 180-self.angle_from_sin > 180 and 180-self.angle_from_cos+180 > 180 and 180-self.angle_from_cos+180 < 340:
+            self.line_angle = 180-self.angle_from_cos+180
+        if 180-self.angle_from_cos+180 > 320:
+            self.line_angle = self.angle_from_sin + 360
 
         self.tangent_angle = self.line_angle + 90
 
@@ -256,7 +268,7 @@ class MyGame(arcade.Window):
         self.projectile_velocity_y = self.projectile_velocity_y + self.projectile_acc_y * self.time
         self.projectile_velocity_x = self.projectile_velocity_x + self.projectile_acc_x * self.time
 
-        self.projectile_angle = math.degrees(math.asin((self.projectile_y2-self.projectile_y)/((self.projectile_x2-self.projectile_x)**2+(self.projectile_y2-self.projectile_y)**2)**(1/2)))
+        self.projectile_angle = -math.degrees(math.asin((self.projectile_y2-self.projectile_y)/((self.projectile_x2-self.projectile_x)**2+(self.projectile_y2-self.projectile_y)**2)**(1/2)))
 
         self.projectile_velocity = (((self.projectile_x2-self.projectile_x)**2+(self.projectile_y2-self.projectile_y)**2)**(1/2))/self.time
         
@@ -265,11 +277,13 @@ class MyGame(arcade.Window):
         
         self.projectile_distance_from_center = ((self.projectile_x-self.helike_center_x)**2+(self.projectile_y-self.helike_center_y)**2)**(1/2)
 
+
         if self.projectile_distance_from_center <= self.helike_rad + self.projectile_rad:
             self.projectile_angle = -self.projectile_angle
             self.projectile_velocity_y = self.projectile_velocity * math.sin(math.radians(self.projectile_angle))
             self.projectile_velocity_x = self.projectile_velocity * math.cos(math.radians(self.projectile_angle))
-        print(self.projectile_angle)
+
+        #print(self.projectile_x,self.projectile_y)
 
         self.north_x = self.helike_center_x
         self.north_y = self.helike_center_y + self.helike_rad
