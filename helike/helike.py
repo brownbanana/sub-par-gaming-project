@@ -2,8 +2,8 @@
 
 import arcade,math
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 1200
+SCREEN_HEIGHT = 1000
 
 
 class MyGame(arcade.Window):
@@ -22,8 +22,8 @@ class MyGame(arcade.Window):
     enter = False
     
     helike_rad = 100
-    helike_center_x = 400
-    helike_center_y = 300
+    helike_center_x = 600
+    helike_center_y = 500
     
     line_x = 0
     line_y = 0
@@ -87,7 +87,8 @@ class MyGame(arcade.Window):
         arcade.set_background_color(arcade.color.BLACK)
 
     def setup(self):
-        pass
+        self.asdf = arcade.sound.load_sound("fdsa1.wav")
+        arcade.sound.play_sound(self.asdf)
 
     def on_draw(self):
         """ Render the screen. """
@@ -96,27 +97,27 @@ class MyGame(arcade.Window):
 
         if self.set_up == True:
             if self.selection == 0:
-                arcade.draw_text("Hight: {}".format(round(self.projectile_y,1)-self.helike_center_y-self.projectile_rad-self.helike_rad),10,580,arcade.color.RED,12)
+                arcade.draw_text("Hight: {}".format(round(self.projectile_y,1)-self.helike_center_y-self.projectile_rad-self.helike_rad),10,980,arcade.color.RED,12)
             else:
-                arcade.draw_text("Hight: {}".format(round(self.projectile_y,1)-self.helike_center_y-self.projectile_rad-self.helike_rad),10,580,arcade.color.WHITE,12)
+                arcade.draw_text("Hight: {}".format(round(self.projectile_y,1)-self.helike_center_y-self.projectile_rad-self.helike_rad),10,980,arcade.color.WHITE,12)
             if self.selection == 1:
-                arcade.draw_text("Velocitiy: {}".format(round(self.projectile_velocity,1)),110,580,arcade.color.RED,12)
+                arcade.draw_text("Velocitiy: {}".format(round(self.projectile_velocity,1)),110,980,arcade.color.RED,12)
             else:
-                arcade.draw_text("Velocitiy: {}".format(round(self.projectile_velocity,1)),110,580,arcade.color.WHITE,12)
+                arcade.draw_text("Velocitiy: {}".format(round(self.projectile_velocity,1)),110,980,arcade.color.WHITE,12)
             if self.selection == 2:
-                arcade.draw_text("Angle: {}".format(round(self.projectile_angle,1)),250,580,arcade.color.RED,12)
+                arcade.draw_text("Angle: {}".format(round(self.projectile_angle,1)),250,980,arcade.color.RED,12)
             else:
-                arcade.draw_text("Angle: {}".format(round(self.projectile_angle,1)),250,580,arcade.color.WHITE,12)
+                arcade.draw_text("Angle: {}".format(round(self.projectile_angle,1)),250,980,arcade.color.WHITE,12)
 
 
-        arcade.draw_circle_filled(self.helike_center_x, self.helike_center_y, self.helike_rad, arcade.color.GREEN)
+        arcade.draw_circle_filled(self.helike_center_x, self.helike_center_y, self.helike_rad, arcade.color.NON_PHOTO_BLUE)
         #arcade.draw_line(self.line_x,self.line_y,self.line_x2,self.line_y2, arcade.color.RED,5)
         #arcade.draw_line(self.leg1_start[0],self.leg1_start[1],self.leg1_end[0],self.leg1_end[1],arcade.color.WHITE,self.body_width)
         #arcade.draw_line(self.leg2_start[0],self.leg2_start[1],self.leg2_end[0],self.leg2_end[1],arcade.color.WHITE,self.body_width)
         #arcade.draw_line(self.body_start[0],self.body_start[1],self.body_end[0],self.body_end[1],arcade.color.WHITE,self.body_width)
         #arcade.draw_line(self.arm_start[0],self.arm_start[1],self.arm_end[0],self.arm_end[1],arcade.color.WHITE,self.body_width)
         #arcade.draw_circle_outline(self.head_center_x,self.head_center_y,self.head_rad,arcade.color.WHITE,self.body_width,100)
-        arcade.draw_circle_filled(self.projectile_x,self.projectile_y,self.projectile_rad,arcade.color.RED)
+        arcade.draw_circle_filled(self.projectile_x,self.projectile_y,self.projectile_rad,arcade.color.SLATE_GRAY)
         #arcade.draw_line(self.tangent_x,self.tangent_y,self.tangent_x2,self.tangent_y2,arcade.color.RED,2)
         
         arcade.finish_render
@@ -192,7 +193,8 @@ class MyGame(arcade.Window):
 
 
     def update(self, delta_time):
-        print(delta_time)
+        
+        #print(self.projectile_velocity,self.projectile_distance_from_center)
         
         self.time = delta_time
 
