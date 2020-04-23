@@ -69,6 +69,8 @@ class MyGame(arcade.Window):
     projectile_acc_x = 0
     projectile_acc_y = 0
 
+    bounce_velocity = 0
+
     force_on_projectile = 0
 
     tangent_angle = 0
@@ -101,13 +103,13 @@ class MyGame(arcade.Window):
             else:
                 arcade.draw_text("Hight: {}".format(round(self.projectile_y,1)-self.helike_center_y-self.projectile_rad-self.helike_rad),10,980,arcade.color.WHITE,12)
             if self.selection == 1:
-                arcade.draw_text("Velocitiy: {}".format(round(self.projectile_velocity,1)),110,980,arcade.color.RED,12)
+                arcade.draw_text("Velocitiy: {}".format(round(self.projectile_velocity,1)),130,980,arcade.color.RED,12)
             else:
-                arcade.draw_text("Velocitiy: {}".format(round(self.projectile_velocity,1)),110,980,arcade.color.WHITE,12)
+                arcade.draw_text("Velocitiy: {}".format(round(self.projectile_velocity,1)),130,980,arcade.color.WHITE,12)
             if self.selection == 2:
-                arcade.draw_text("Angle: {}".format(round(self.projectile_angle,1)),250,980,arcade.color.RED,12)
+                arcade.draw_text("Angle: {}".format(round(self.projectile_angle,1)),285,980,arcade.color.RED,12)
             else:
-                arcade.draw_text("Angle: {}".format(round(self.projectile_angle,1)),250,980,arcade.color.WHITE,12)
+                arcade.draw_text("Angle: {}".format(round(self.projectile_angle,1)),285,980,arcade.color.WHITE,12)
 
 
         arcade.draw_circle_filled(self.helike_center_x, self.helike_center_y, self.helike_rad, arcade.color.NON_PHOTO_BLUE)
@@ -173,6 +175,14 @@ class MyGame(arcade.Window):
 
         if key == arcade.key.DELETE:
             self.selection_value = '0'
+        if key == arcade.key.BACKSPACE:
+            print('12')
+            selection_list = []
+            for i in range(len(self.selection_value)-1):
+                selection_list.append(self.selection_value[i])
+            self.selection_value = ''
+            for i in selection_list:
+                self.selection_value = self.selection_value + i
     
 
     def on_key_release(self,key,modifiers): 
@@ -194,30 +204,28 @@ class MyGame(arcade.Window):
 
     def update(self, delta_time):
         
-        #print(self.projectile_velocity,self.projectile_distance_from_center)
-        
         self.time = delta_time
 
         if self.set_up == True:
             if self.helike_up == True and self.selection == 0:   
-                self.selection_value = str(int(self.selection_value) + 1)
-            if self.helike_down == True and self.selection == 0 and int(self.selection_value) > 0:
-                self.selection_value = str(int(self.selection_value) - 1)#self.projectile_y -= 1
+                self.selection_value = str(float(self.selection_value) + 1)
+            if self.helike_down == True and self.selection == 0 and float(self.selection_value) > 0:
+                self.selection_value = str(float(self.selection_value) - 1)#self.projectile_y -= 1
             if self.helike_up == True and self.selection == 1:
-                self.selection_value = str(int(self.selection_value) + 1)#self.projectile_velocity += 1
-            if self.helike_down == True and self.selection == 1 and int(self.selection_value) > 0:
-                self.selection_value = str(int(self.selection_value) - 1)#self.projectile_velocity -= 1
+                self.selection_value = str(float(self.selection_value) + 1)#self.projectile_velocity += 1
+            if self.helike_down == True and self.selection == 1 and float(self.selection_value) > 0:
+                self.selection_value = str(float(self.selection_value) - 1)#self.projectile_velocity -= 1
             if self.helike_up == True and self.selection == 2:
-                self.selection_value = str(int(self.selection_value) + 1)#self.projectile_angle += 1
-            if self.helike_down == True and self.selection == 2 and int(self.selection_value) > 0:
-                self.selection_value = str(int(self.selection_value) - 1)#self.projectile_angle -= 1
+                self.selection_value = str(float(self.selection_value) + 1)#self.projectile_angle += 1
+            if self.helike_down == True and self.selection == 2 and float(self.selection_value) > 0:
+                self.selection_value = str(float(self.selection_value) - 1)#self.projectile_angle -= 1
 
             if self.selection == 0:
-                self.projectile_y = self.helike_center_y + self.projectile_rad + self.helike_rad + int(self.selection_value)
+                self.projectile_y = self.helike_center_y + self.projectile_rad + self.helike_rad + float(self.selection_value)
             if self.selection == 1:
-                self.projectile_velocity = int(self.selection_value)
+                self.projectile_velocity = float(self.selection_value)
             if self.selection == 2:
-                self.projectile_angle = int(self.selection_value)
+                self.projectile_angle = float(self.selection_value)
                 
             self.projectile_velocity_x = self.projectile_velocity*math.cos(math.radians(self.projectile_angle))
             self.projectile_velocity_y = self.projectile_velocity*math.sin(math.radians(self.projectile_angle))
@@ -229,7 +237,7 @@ class MyGame(arcade.Window):
 
             if self.r == True:
                 self.set_up = True
-                self.projectile_x = 400
+                self.projectile_x = 600
                 self.projectile_y = self.helike_center_y + self.projectile_rad + self.helike_rad
                 self.projectile_velocity = 0
                 self.projectile_angle = 0
@@ -330,16 +338,17 @@ class MyGame(arcade.Window):
             if self.projectile_distance_from_center >= self.helike_rad + self.projectile_rad:
                 self.projectile_y = self.projectile_y2
                 self.projectile_x = self.projectile_x2
+                
+                self.bounce_velocity = ((self.projectile_velocity_x**2) + (self.projectile_velocity_y**2))**(1/2)
 
-            if self.projectile_distance_from_center < self.helike_rad + self.projectile_rad:
+            elif self.projectile_distance_from_center < self.helike_rad + self.projectile_rad:
                 self.projectile_angle = self.tangent_angle-self.projectile_angle+self.tangent_angle
-                self.projectile_velocity_y = self.projectile_velocity * math.sin(math.radians(self.projectile_angle))
-                self.projectile_velocity_x = self.projectile_velocity * math.cos(math.radians(self.projectile_angle))
+                self.projectile_velocity_y = self.bounce_velocity * math.sin(math.radians(self.projectile_angle))
+                self.projectile_velocity_x = self.bounce_velocity * math.cos(math.radians(self.projectile_angle))
                 
                 self.projectile_x = self.projectile_x2 + ((self.projectile_x2-self.projectile_x)**2+(self.projectile_y2-self.projectile_y)**2)**(1/2)*math.cos(math.radians(self.projectile_angle))
                 self.projectile_y = self.projectile_y2 + (((self.projectile_x2-self.projectile_x)**2+(self.projectile_y2-self.projectile_y)**2)**(1/2))*math.sin(math.radians(self.projectile_angle))
                   
-
 
 def main():
     game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT)
